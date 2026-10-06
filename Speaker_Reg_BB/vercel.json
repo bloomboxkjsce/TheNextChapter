@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/thenextchapter-registrations/:path*",
+      "destination": "/frontend/:path*"
+    },
+    {
       "source": "/",
       "destination": "/frontend/index.html"
     },
