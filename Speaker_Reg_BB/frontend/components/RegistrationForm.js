@@ -33,7 +33,6 @@ class RegistrationForm {
             aiFamiliarity: document.getElementById('aiFamiliarity'),
             byjusFamiliarity: document.getElementById('byjusFamiliarity'),
             aiEducationConcerns: document.getElementById('aiEducationConcerns'),
-            aiAgentsUsed: document.getElementById('aiAgentsUsed'),
             unstopRegistered: document.getElementById('unstopRegistered'),
 
             // Section 3: Pitch to Divya (Optional / Conditional)
@@ -56,22 +55,19 @@ class RegistrationForm {
         // 1. Populate dropdown options from CONFIG
         this.populateDropdowns();
 
-        // 2. Initialize AI Agents chips (Section 2)
-        this.initAIAgentChips();
-
-        // 3. Dynamic toggle for pitch section
+        // 2. Dynamic toggle for pitch section
         this.setupPitchToggle();
 
-        // 4. Live word counter for Pitch Why Divya
+        // 3. Live word counter for Pitch Why Divya
         this.setupWordCounter();
 
-        // 5. File upload listener
+        // 4. File upload listener
         this.setupFileUpload();
 
-        // 6. Pre-select Unstop if URL has ?source=unstop
+        // 5. Pre-select Unstop if URL has ?source=unstop
         this.checkURLParams();
 
-        // 7. Attach real-time validation listeners
+        // 6. Attach real-time validation listeners
         const basicKeys = [
             'fullName', 
             'email', 
@@ -134,6 +130,8 @@ class RegistrationForm {
         };
 
         // Section 1
+        populateSelect(this.fields.collegeName, window.CONFIG.COLLEGES, "Select your college");
+
         if (this.fields.branchSpecialization && window.CONFIG.BRANCHES) {
             this.fields.branchSpecialization.innerHTML = `<option value="" selected>Select branch (Optional)</option>`;
             window.CONFIG.BRANCHES.forEach(b => {
@@ -156,54 +154,6 @@ class RegistrationForm {
         populateSelect(this.fields.pitchOpportunity, window.CONFIG.PITCH_OPTIONS, "Select Yes / No");
         populateSelect(this.fields.pitchType, window.CONFIG.PITCH_TYPES, "Select pitch category");
         populateSelect(this.fields.pitchStage, window.CONFIG.PITCH_STAGES, "Select current stage");
-    }
-
-    /**
-     * Initialize interactive AI Agent badge chips (Section 2)
-     */
-    initAIAgentChips() {
-        const grid = document.getElementById('ai-agents-chip-grid');
-        if (!grid || !window.CONFIG || !window.CONFIG.AI_AGENTS) return;
-
-        grid.innerHTML = "";
-        const selectedAgents = new Set();
-
-        window.CONFIG.AI_AGENTS.forEach(agent => {
-            const btn = document.createElement('button');
-            btn.type = "button";
-            btn.className = "tag-chip-btn";
-            btn.textContent = agent;
-
-            btn.addEventListener('click', () => {
-                const isNone = agent.startsWith("I don't");
-                if (isNone) {
-                    selectedAgents.clear();
-                    selectedAgents.add(agent);
-                    grid.querySelectorAll('.tag-chip-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                } else {
-                    Array.from(selectedAgents).forEach(a => {
-                        if (a.startsWith("I don't")) selectedAgents.delete(a);
-                    });
-                    const noneBtn = Array.from(grid.children).find(b => b.textContent.includes("I don't"));
-                    if (noneBtn) noneBtn.classList.remove('active');
-
-                    if (selectedAgents.has(agent)) {
-                        selectedAgents.delete(agent);
-                        btn.classList.remove('active');
-                    } else {
-                        selectedAgents.add(agent);
-                        btn.classList.add('active');
-                    }
-                }
-
-                if (this.fields.aiAgentsUsed) {
-                    this.fields.aiAgentsUsed.value = Array.from(selectedAgents).join(', ');
-                }
-            });
-
-            grid.appendChild(btn);
-        });
     }
 
     /**
@@ -357,9 +307,9 @@ class RegistrationForm {
                 break;
 
             case 'collegeName':
-                if (!val || val.length < 2) {
+                if (!val || val === "") {
                     isValid = false;
-                    errorMsg = "Please enter your college or institution name.";
+                    errorMsg = "Please select your college or institution.";
                 }
                 break;
 
@@ -580,7 +530,6 @@ class RegistrationForm {
             aiFamiliarity: this.fields.aiFamiliarity.value,
             byjusFamiliarity: this.fields.byjusFamiliarity.value,
             aiEducationConcerns: aiConcernsVal,
-            aiAgentsUsed: this.fields.aiAgentsUsed ? this.fields.aiAgentsUsed.value : "",
             unstopRegistered: this.fields.unstopRegistered ? this.fields.unstopRegistered.value : "No, not yet",
 
             // Section 3: Pitch & Questions
