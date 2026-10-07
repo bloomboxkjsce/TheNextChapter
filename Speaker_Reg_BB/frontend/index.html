@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <base href="/thenextchapter-registrations/">
+    <base href="/thenextchapter-registrations/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>TheNextChapter - Bloombox</title>
@@ -516,13 +516,13 @@
                                     <label for="collegeName" class="form-label">
                                         <span>COLLEGE NAME *</span>
                                     </label>
-                                    <input 
-                                        type="text" 
-                                        id="collegeName" 
-                                        class="input-control" 
-                                        placeholder="e.g. K. J. Somaiya College of Engineering" 
-                                        required
-                                    >
+                                    <select id="collegeName" class="input-control" required>
+                                        <option value="" disabled selected>Select your college</option>
+                                        <option value="KJ Somaiya School of Engineering">KJ Somaiya School of Engineering</option>
+                                        <option value="KJ Somaiya Institute of Management">KJ Somaiya Institute of Management</option>
+                                        <option value="KJ Somaiya Institute of Arts and Commerce">KJ Somaiya Institute of Arts and Commerce</option>
+                                        <option value="Others">Others</option>
+                                    </select>
                                     <div class="error-message" id="collegeName-error"></div>
                                 </div>
                             </div>
@@ -610,17 +610,7 @@
                                 <div class="error-message" id="aiEducationConcerns-error"></div>
                             </div>
 
-                            <!-- Which AI Tools do you currently use? -->
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <span>WHICH AI TOOLS DO YOU CURRENTLY USE? (SELECT ALL THAT APPLY)</span>
-                                </label>
-                                <div class="chip-grid" id="ai-agents-chip-grid">
-                                    <!-- Populated dynamically via JS -->
-                                </div>
-                                <input type="hidden" id="aiAgentsUsed" name="aiAgentsUsed" value="">
-                                <div class="error-message" id="aiAgentsUsed-error"></div>
-                            </div>
+
 
                             <!-- Workshop (Unstop) Status * -->
                             <div class="form-group" style="margin-top: 0.5rem;">
