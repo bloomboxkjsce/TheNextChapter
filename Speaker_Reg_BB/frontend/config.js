@@ -35,6 +35,13 @@ const CONFIG = {
     // ----------------------------------------------------
     // FORM DROPDOWN / SELECT OPTIONS
     // ----------------------------------------------------
+    COLLEGES: [
+        "KJ Somaiya School of Engineering",
+        "KJ Somaiya Institute of Management",
+        "KJ Somaiya Institute of Arts and Commerce",
+        "Others"
+    ],
+
     YEARS: [
         "First Year",
         "Second Year",
@@ -75,19 +82,6 @@ const CONFIG = {
         "Lack of human interaction",
         "I don't have any major concerns",
         "Other"
-    ],
-
-    AI_AGENTS: [
-        "ChatGPT",
-        "Claude",
-        "Gemini",
-        "Perplexity",
-        "Microsoft Copilot",
-        "GitHub Copilot",
-        "Cursor",
-        "Manus",
-        "Other",
-        "I don't currently use any AI Tools"
     ],
 
     BYJUS_FAMILIARITY: [
