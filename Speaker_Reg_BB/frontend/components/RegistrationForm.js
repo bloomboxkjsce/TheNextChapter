@@ -278,16 +278,19 @@ class RegistrationForm {
 
             case 'email':
                 const emailLower = val.toLowerCase();
-                const somaiyaEmailRegex = /^[a-zA-Z0-9._%+-]+@somaiya\.edu$/i;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!val) {
                     isValid = false;
-                    errorMsg = "Please enter your Somaiya email ID.";
-                } else if (!emailLower.endsWith("@somaiya.edu")) {
+                    errorMsg = "Please enter your email address.";
+                } else if (!emailRegex.test(emailLower)) {
                     isValid = false;
-                    errorMsg = "Email must be an official Somaiya ID ending with @somaiya.edu.";
-                } else if (!somaiyaEmailRegex.test(val)) {
-                    isValid = false;
-                    errorMsg = "Please enter a valid email address with letters and numbers only.";
+                    errorMsg = "Please enter a valid email address.";
+                } else if (this.options.allowedDomain && this.options.allowedDomain.trim() !== "") {
+                    const domain = this.options.allowedDomain.toLowerCase();
+                    if (!emailLower.endsWith("@" + domain) && !emailLower.endsWith("." + domain)) {
+                        isValid = false;
+                        errorMsg = `Email must end with @${this.options.allowedDomain}.`;
+                    }
                 }
                 break;
 
@@ -530,6 +533,7 @@ class RegistrationForm {
             aiFamiliarity: this.fields.aiFamiliarity.value,
             byjusFamiliarity: this.fields.byjusFamiliarity.value,
             aiEducationConcerns: aiConcernsVal,
+            aiAgentsUsed: "",
             unstopRegistered: this.fields.unstopRegistered ? this.fields.unstopRegistered.value : "No, not yet",
 
             // Section 3: Pitch & Questions
