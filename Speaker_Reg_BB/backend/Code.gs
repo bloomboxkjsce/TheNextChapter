@@ -9,8 +9,8 @@ const SPREADSHEET_ID = PropertiesService.getScriptProperties().getProperty("SPRE
 // Tab name inside your Google Sheet
 const SHEET_NAME = "Registrations";
 
-// Domain restriction (Compulsory @somaiya.edu)
-const ALLOWED_EMAIL_DOMAIN = "somaiya.edu";
+// Domain restriction (Empty string allows all emails including Gmail, Yahoo, etc.)
+const ALLOWED_EMAIL_DOMAIN = PropertiesService.getScriptProperties().getProperty("ALLOWED_EMAIL_DOMAIN") || "";
 
 
 // ====================================================
@@ -52,6 +52,7 @@ function doPost(e) {
     const aiFamiliarity = (data.aiFamiliarity || "").trim();
     const byjusFamiliarity = (data.byjusFamiliarity || "").trim();
     const aiEducationConcerns = (data.aiEducationConcerns || "").trim();
+    const aiAgentsUsed = (data.aiAgentsUsed || "").trim();
     const unstopRegistered = (data.unstopRegistered || "").trim();
 
     // Section 3: Pitch To Divya
@@ -167,6 +168,7 @@ function doPost(e) {
         aiFamiliarity,
         byjusFamiliarity,
         aiEducationConcerns,
+        aiAgentsUsed,
         unstopRegistered,
         pitchOpportunity,
         pitchType,
@@ -279,9 +281,10 @@ function getOrCreateSheet() {
       "Division",
       "Year of Study",
       "Programme / Course",
-      "AI Familiarity",
+      "AI Agents Familiarity",
       "BYJU'S Familiarity",
       "AI Education Concerns",
+      "AI Agents Used",
       "Zero to One Workshop (Unstop) Status",
       "Pitch Opportunity",
       "Pitch Category",
@@ -386,7 +389,14 @@ function sendConfirmationEmail(email, fullName) {
         '</div>' +
       '</div>';
 
-    // Build base email options
+    // Check remaining daily email quota
+    const quota = MailApp.getRemainingDailyQuota();
+    if (quota <= 0) {
+      Logger.log("Warning: Daily email quota reached (0 remaining). Cannot send email to: " + email);
+      return;
+    }
+
+    // Build base email payload for reliable external delivery
     const mailOptions = {
       to: email,
       subject: subject,
@@ -396,34 +406,25 @@ function sendConfirmationEmail(email, fullName) {
       replyTo: senderEmail
     };
 
-    // Check if senderEmail is a valid verified Gmail alias for the active account
-    let canUseFrom = false;
+    // Attempt 1: MailApp.sendEmail (Standard Apps Script service, natively handles sending to all external domains e.g. @gmail.com)
     try {
-      const activeUser = Session.getActiveUser().getEmail();
-      if (activeUser && activeUser.toLowerCase() === senderEmail.toLowerCase()) {
-        canUseFrom = true;
-      } else {
-        const aliases = GmailApp.getAliases();
-        if (aliases && aliases.indexOf(senderEmail) !== -1) {
-          canUseFrom = true;
-        }
-      }
-    } catch (aliasErr) {
-      Logger.log("Alias check notice: " + aliasErr.toString());
-    }
-
-    if (canUseFrom) {
-      mailOptions.from = senderEmail;
-    }
-
-    // Try GmailApp first, fall back to MailApp
-    try {
-      GmailApp.sendEmail(email, subject, plainTextBody, mailOptions);
-      Logger.log("Confirmation email successfully sent via GmailApp to: " + email);
-    } catch (gErr) {
-      Logger.log("GmailApp send notice (" + gErr.toString() + "), attempting MailApp fallback...");
       MailApp.sendEmail(mailOptions);
       Logger.log("Confirmation email successfully sent via MailApp to: " + email);
+      return;
+    } catch (mailErr) {
+      Logger.log("MailApp notice (" + mailErr.toString() + "), attempting GmailApp fallback...");
+    }
+
+    // Attempt 2: GmailApp.sendEmail fallback
+    try {
+      GmailApp.sendEmail(email, subject, plainTextBody, {
+        htmlBody: htmlBody,
+        name: "Bloombox E-Cell",
+        replyTo: senderEmail
+      });
+      Logger.log("Confirmation email successfully sent via GmailApp fallback to: " + email);
+    } catch (gmailErr) {
+      Logger.log("GmailApp fallback error: " + gmailErr.toString());
     }
 
   } catch (err) {
