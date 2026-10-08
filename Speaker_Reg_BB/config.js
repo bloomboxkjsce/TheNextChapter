@@ -9,8 +9,8 @@ const CONFIG = {
     // ----------------------------------------------------
     GOOGLE_APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyMED-U_gqHypWVNJa-GQN6i0aEb6oSbMoLjxUzEZ50Ws_HwNha-S7uZDAXhLZUMIdGIg/exec",
     
-    // Domain restriction for emails (Compulsory @somaiya.edu)
-    ALLOWED_EMAIL_DOMAIN: "somaiya.edu",
+    // Domain restriction for emails (Empty string allows all email domains like Gmail, etc.)
+    ALLOWED_EMAIL_DOMAIN: "",
 
     // ----------------------------------------------------
     // EVENT & LINKS
@@ -34,6 +34,13 @@ const CONFIG = {
     // ----------------------------------------------------
     // FORM DROPDOWN / SELECT OPTIONS
     // ----------------------------------------------------
+    COLLEGES: [
+        "KJ Somaiya School of Engineering",
+        "KJ Somaiya Institute of Management",
+        "KJ Somaiya Institute of Arts and Commerce",
+        "Others"
+    ],
+
     YEARS: [
         "First Year",
         "Second Year",
@@ -74,19 +81,6 @@ const CONFIG = {
         "Lack of human interaction",
         "I don't have any major concerns",
         "Other"
-    ],
-
-    AI_AGENTS: [
-        "ChatGPT",
-        "Claude",
-        "Gemini",
-        "Perplexity",
-        "Microsoft Copilot",
-        "GitHub Copilot",
-        "Cursor",
-        "Manus",
-        "Other",
-        "I don't currently use any AI Tools"
     ],
 
     BYJUS_FAMILIARITY: [
