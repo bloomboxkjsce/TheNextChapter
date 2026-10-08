@@ -9,9 +9,9 @@ const CONFIG = {
     // ----------------------------------------------------
     // Replace this with your deployed Google Apps Script Web App URL
     GOOGLE_APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyMED-U_gqHypWVNJa-GQN6i0aEb6oSbMoLjxUzEZ50Ws_HwNha-S7uZDAXhLZUMIdGIg/exec",
-    
-    // Domain restriction for emails (Compulsory @somaiya.edu)
-    ALLOWED_EMAIL_DOMAIN: "somaiya.edu",
+
+    // Domain restriction for emails (Empty string allows all email domains like Gmail, etc.)
+    ALLOWED_EMAIL_DOMAIN: "",
 
     // ----------------------------------------------------
     // EVENT & LINKS
@@ -22,7 +22,7 @@ const CONFIG = {
     EVENT_DATE: "9th October 2026",
     EVENT_TIME: "3:00 PM Onwards",
     EVENT_VENUE: "Aryabhatta Auditorium, KJSSE",
-    
+
     // Zero to One Workshop Unstop link
     DAY2_UNSTOP_URL: "https://unstop.com/o/q92LkeV?lb=B5P1VLE&utm_medium=Share&utm_source=bloomkjs6233&utm_campaign=Workshops",
 
@@ -127,7 +127,7 @@ const CONFIG = {
     ENABLE_3D: true,
     ENABLE_MOUSE_INTERACTION: true,
     ENABLE_TOUCH_INTERACTION: true,
-    
+
     LOG_SETTINGS: {
         rotationSpeedY: 0.006,
         rotationSpeedX: 0.002,
